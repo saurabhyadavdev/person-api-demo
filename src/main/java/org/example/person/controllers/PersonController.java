@@ -23,14 +23,14 @@ public class PersonController {
     @Operation(operationId = "findPersonById", summary = "Get person information by id")
     @ApiResponse(responseCode = "200", description = "Fetched info successfully", content = @Content(mediaType = "application/json"))
     public Person get(@PathVariable Long id) {
-        return repository.find(id);
+        return repository.findById(id).orElse(null);
     }
 
     @GetMapping
     @Operation(operationId = "findPersons", summary = "Get all persons information")
     @ApiResponse(responseCode = "200", description = "Fetched info successfully", content = @Content(mediaType = "application/json"))
     public List<Person> list() {
-        return repository.list();
+        return repository.findAll();
     }
 
     @PostMapping
@@ -38,24 +38,24 @@ public class PersonController {
     @ApiResponse(responseCode = "201", description = "Added person successfully", content = @Content(mediaType = "application/json"))
     public Person create(@RequestBody final Person person) {
         System.out.println(person);
-        return repository.create(person);
+        return repository.save(person);
     }
 
     @PutMapping("{id}")
     @Operation(operationId = "editPerson", summary = "Update the person")
     @ApiResponse(responseCode = "200", description = "Updated person successfully", content = @Content(mediaType = "application/json"))
     public void update(@PathVariable Long id, @RequestBody final Person person) {
-        Person existingPerson = repository.find(id);
+        Person existingPerson = repository.findById(id).orElse(null);
         BeanUtils.copyProperties(person, existingPerson, "id");
-        repository.update(person);
+        repository.save(person);
     }
 
     @DeleteMapping("{id}")
     @Operation(operationId = "removePerson", summary = "Delete the person")
     @ApiResponse(responseCode = "200", description = "Removed person successfully", content = @Content(mediaType = "application/json"))
     public void delete(@PathVariable @Parameter(description = "Person identifier") Long id) {
-        Person existingPerson = repository.find(id);
-        repository.delete(existingPerson);
+        Person existingPerson = repository.findById(id).orElse(null);
+        repository.deleteById(id);
     }
 
 }

@@ -1,48 +1,37 @@
 package org.example.person.repositories;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.Transactional;
 import org.example.person.models.Person;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class PersonRepository {
 
-    @PersistenceContext
-    EntityManager entityManager;
+    private final PersonJpaRepository jpaRepository;
 
-    @Autowired
-    PersonJpaRepository jpaRepository;
-
-    @Transactional
-    public Person create(Person person) {
-        entityManager.persist(person);
-        entityManager.flush();
-        return person;
+    public PersonRepository(PersonJpaRepository jpaRepository) {
+        this.jpaRepository = jpaRepository;
     }
 
-    @Transactional
-    public Person update(Person person) {
-        person = entityManager.merge(person);
-        entityManager.flush();
-        return person;
+    public Optional<Person> findById(Long id) {
+        return jpaRepository.findById(id);
     }
 
-    @Transactional
-    public void delete(Person person) {
-        entityManager.remove(person);
-        entityManager.flush();
-    }
-
-    public Person find(Long id) {
-        return entityManager.find(Person.class, id);
-    }
-
-    public List<Person> list() {
+    public List<Person> findAll() {
         return jpaRepository.findAll();
+    }
+
+    public Person save(Person person) {
+        return jpaRepository.save(person);
+    }
+
+    public void deleteById(Long id) {
+        jpaRepository.deleteById(id);
+    }
+
+    public boolean existsById(Long id) {
+        return jpaRepository.existsById(id);
     }
 }
