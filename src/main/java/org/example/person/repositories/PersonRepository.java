@@ -1,12 +1,12 @@
 package org.example.person.repositories;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import org.example.person.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
