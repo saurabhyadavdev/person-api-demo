@@ -13,7 +13,7 @@ public class PersonRequest {
     @NotBlank(message = "Last name is required")
     private String lastName;
 
-    @Min(value = 0, message = "Age must be positive")
+    @Min(value = 1, message = "Age must be positive")
     private int age;
 
     @NotBlank(message = "Favourite color is required")
